@@ -1,134 +1,44 @@
-# Based on the "trust" template v0.1.2
-# https://github.com/japaric/trust/tree/v0.1.2
-
 dist: trusty
 language: rust
 services: docker
 sudo: required
-
-# TODO Rust builds on stable by default, this can be
-# overridden on a case by case basis down below.
-
 env:
   global:
-    # TODO Update this to match the name of your project.
-    - CRATE_NAME=spotter
-
+  - CRATE_NAME=spotter
+  - secure: Z9pAGqdjf+RGaRjkvpiijTKdJUDmc/Reh+8pfshNPFp4JabwAPxCoJHFitDx808eYUKQOjOy1AdZAoXSIfjHkz01MEv1cYBCImS+Jj9ngFOp6AW9y13vXXTnNlkfQDF4an//cOr16BgrBW5mfgzR3moWS4fmmAM5jplIUeKt/Ufvbi9D7iTltRSEe+Ucevdj3tuUUWS6hyHsQAA0NbjLcnLL+DJK0S7208ZKwgvWky5ozcfllEoN15CUkHOs+43neJjt3snmOUXTWVaNPYNL5D510AEclad2gzBBhRdguNZY4PA6Ad3/llmvTjl1LAPE3L9p6lfVnEyPG319OebC3IUblxeem3YCIGRG8C4ERVidnPoNkrP07GsHoPTk/DDDD5ta1FGK9wDK8GO050XCahcgcaHQk3S3hC+0M+ga8MrufSm2aIFZ7VQyPdQAU8Kd/oVMLOmJj3a5wRu1MKtBJuzH2To7Qcq7TfkNxn6TBDYotpQ85fGYqrFJvK/SMv5EKggISoPiVjqKFT1X4MpdEqGnnoZGzWi9FOHhpjFfaRHDhXkbmJumcDMZydLC7yCflfyGUNfWkpe5Dp/Wul64IOMw5riwcJ1r5XGAstcIdo82Ajz6HFzs6XwcL9oNkNM1GdeypsMk6BBhI4baMEdQehy7YD4rPwIVp703A303iEg=
 matrix:
-  # TODO These are all the build jobs. Adjust as necessary. Comment out what you
-  # don't need
   include:
-    # Android
-    # - env: TARGET=aarch64-linux-android DISABLE_TESTS=1
-    # - env: TARGET=arm-linux-androideabi DISABLE_TESTS=1
-    # - env: TARGET=armv7-linux-androideabi DISABLE_TESTS=1
-    # - env: TARGET=i686-linux-android DISABLE_TESTS=1
-    # - env: TARGET=x86_64-linux-android DISABLE_TESTS=1
-
-    # iOS
-    # - env: TARGET=aarch64-apple-ios DISABLE_TESTS=1
-    #   os: osx
-    # - env: TARGET=armv7-apple-ios DISABLE_TESTS=1
-    #   os: osx
-    # - env: TARGET=armv7s-apple-ios DISABLE_TESTS=1
-    #   os: osx
-    # - env: TARGET=i386-apple-ios DISABLE_TESTS=1
-    #   os: osx
-    # - env: TARGET=x86_64-apple-ios DISABLE_TESTS=1
-    #   os: osx
-
-    # Linux
-    # - env: TARGET=aarch64-unknown-linux-gnu
-    # - env: TARGET=arm-unknown-linux-gnueabi
-    # - env: TARGET=armv7-unknown-linux-gnueabihf
-    # - env: TARGET=i686-unknown-linux-gnu
-    # - env: TARGET=i686-unknown-linux-musl
-    # - env: TARGET=mips-unknown-linux-gnu
-    # - env: TARGET=mips64-unknown-linux-gnuabi64
-    # - env: TARGET=mips64el-unknown-linux-gnuabi64
-    # - env: TARGET=mipsel-unknown-linux-gnu
-    # - env: TARGET=powerpc-unknown-linux-gnu
-    # - env: TARGET=powerpc64-unknown-linux-gnu
-    # - env: TARGET=powerpc64le-unknown-linux-gnu
-    # - env: TARGET=s390x-unknown-linux-gnu DISABLE_TESTS=1
-    # - env: TARGET=x86_64-unknown-linux-gnu
-    # - env: TARGET=x86_64-unknown-linux-musl
-
-    # OSX
-    # - env: TARGET=i686-apple-darwin
-    #   os: osx
-    - env: TARGET=x86_64-apple-darwin
-      os: osx
-
-    # *BSD
-    # - env: TARGET=i686-unknown-freebsd DISABLE_TESTS=1
-    # - env: TARGET=x86_64-unknown-freebsd DISABLE_TESTS=1
-    # - env: TARGET=x86_64-unknown-netbsd DISABLE_TESTS=1
-
-    # Windows
-    - env: TARGET=x86_64-pc-windows-gnu
-
-    # Bare metal
-    # These targets don't support std and as such are likely not suitable for
-    # most crates.
-    # - env: TARGET=thumbv6m-none-eabi
-    # - env: TARGET=thumbv7em-none-eabi
-    # - env: TARGET=thumbv7em-none-eabihf
-    # - env: TARGET=thumbv7m-none-eabi
-
-    # Testing other channels
-    # - env: TARGET=x86_64-unknown-linux-gnu
-    #   rust: nightly
-    # - env: TARGET=x86_64-apple-darwin
-    #   os: osx
-    #   rust: nightly
-
+  - env: TARGET=x86_64-apple-darwin
+    os: osx
+  - env: TARGET=x86_64-pc-windows-gnu
 before_install:
-  - set -e
-  - rustup self update
-
+- set -e
+- rustup self update
 install:
-  - sh ci/install.sh
-  - source ~/.cargo/env || true
-
+- sh ci/install.sh
+- source ~/.cargo/env || true
 script:
-  - bash ci/script.sh
-
+- bash ci/script.sh
 after_script: set +e
-
 before_deploy:
-  - sh ci/before_deploy.sh
-
+- sh ci/before_deploy.sh
 deploy:
-  # TODO update `api_key.secure`
-  # - Create a `public_repo` GitHub token. Go to: https://github.com/settings/tokens/new
-  # - Encrypt it: `travis encrypt 0123456789012345678901234567890123456789
-  # - Paste the output down here
   api_key:
-    secure: A9v3PIzQQ4U08OHFmDPQzNXbNHEb7YHyLXCvMF+dXFuNSvhUNlmQYykxqUf3dvikhJL2/bsZ14umm7ni7fQh0tGwJ4+lPpNzYAcweGgNXnWvjTpY6ovuRbr3gs4/srkyxp/GBDmSW5L8wFN3hKCB+Lm0YnIPB9IA2afP8a30+8VTXT9nv7pNqGny4ilN41ycr4DZi3sQoXdbruy7ClN7gsWW/GUiudBccHVIjmTapOFKLwZHODaUl/1/RDWQzh+i+17e1ivXuJPktDSrqmHPTZ15OjklnHKd6t179ry6VkGRg4R/R/YukVIqGzeaXGWAwdAQ5gE8cjGZghJLVi2jkDBJ85z8MvT+zLZLyliiuhLc/X8y7mkE1n0FKFtXXzFVt0l7V1LaEKbIbiV6XX3jsir4qgkqWjPHBZqO5mkGNFS16Dmt30/ZtEPAzXiINFXbWuWrpQ/LZ4NSto8IMrRTcoyDbAga/KYxJiNIeVuCe1E9dbytDM7K0GLtxJTul/WnnSeI6r//EFyC4bxYjyHhCXaag4q14KM+ak4rB0QgxsYzyGuh2MqyCoVj8YJLjLdKnL/SV7W7LPD40xlxvI6VCYTVi2ILHwL6vCxpukXYteX0c5IAIWkISDKu6nNBEgmCHXXPSqYSrgE5g7/QoCQHI8++nR8iKe0s7TWxZRydby8=
+    secure: kGCho4FGA4kIXv4/UH3abdjnMETwh+syix1G5NBSJ6Z5l2vXwYH78uoRDSXTj/Wy5nRYlBZrm+awiGXVRktQpW8y8VFtnrBuVH76RsGPjw+Rd6BB4rIDjehw7UkkK73f6ajwwXkrlvmYA0YifX5B3laq0ChGJeFLHNjwA0blgtpLGkBZtYQ7qXZx9qXyHEiXfS+wwmuw300LeBLLztWZ5J1O9PmLiRKIUP6qKeCXLI/uQ4bFpey5WEfN0rnjHJWr41/xeBSROyP4TAnY+vc4GwX4Sh9I4T03BZ/X6eEsqtPa0XdEYZqFfNIfojMLgSv2X3RrkducWXAXfc80Ihn005jFj+9OeGiIOugjzmWY8GpuU5OMFQWtyJCCV/m9VK7iPoTRh9dTzZCJDS07O1VCiUCh6aD/hBbmLBCT5vyLOI2S1UaL0QdnQOQZOqbFEe7Td3L1UEsqfwJmvYbzxUk5Y+L50KqGnk8tR4xgt4jhnrw46LTbfBZIt77AlnBFZPHODJpGnubcx5ptopkZvOLYoDaz/GzkoltgBtq5A3aEG4b3/TCiYAvrgVpmTqbhHbs06TIuki6s+mmqanyXKv2Txj3O41MxQpSooxw1beY0LCpFu9RdiJGo4Zmo3Q7O2+ixj4HpK+WWTXHsfWckCBDNBuPiUqkcpuqyy1EmDyznNNI=
   file_glob: true
-  file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
+  file: "$CRATE_NAME-$TRAVIS_TAG-$TARGET.*"
   on:
-    # TODO Here you can pick which targets will generate binary releases
-    # In this example, there are some targets that are tested using the stable
-    # and nightly channels. This condition makes sure there is only one release
-    # for such targets and that's generated using the stable channel
-    condition: $TRAVIS_RUST_VERSION = stable
+    condition: "$TRAVIS_RUST_VERSION = stable"
     tags: true
   provider: releases
   skip_cleanup: true
-
 cache: cargo
 before_cache:
-  # Travis can't cache files that are not readable by "others"
-  - chmod -R a+r $HOME/.cargo
-
+- chmod -R a+r $HOME/.cargo
 branches:
   only:
-    # release tags
-    - /^v\d+\.\d+\.\d+.*$/
-    - master
-
+  - "/^v\\d+\\.\\d+\\.\\d+.*$/"
+  - master
 notifications:
   email:
     on_success: never

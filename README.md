@@ -8,6 +8,7 @@ cross build --release --target x86_64-pc-windows-gnu
 [![Build Status](https://travis-ci.com/dcuenot/spotter.svg?branch=master)](https://travis-ci.com/dcuenot/spotter)
 
 Travis is used to package the application
+Retry with tags
 
 # Features
 * Generate shell for a new city

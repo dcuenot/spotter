@@ -1,6 +1,8 @@
 # This script takes care of packaging the build artifacts that will go in the
 # release zipfile
 
+set PATH=%PATH%;C:\Users\appveyor\.multirust\toolchains\i686-pc-windows-gnu\bin
+
 $SRC_DIR = $PWD.Path
 $STAGE = [System.Guid]::NewGuid().ToString()
 

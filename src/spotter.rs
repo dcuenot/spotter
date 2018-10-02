@@ -10,6 +10,7 @@ extern crate curl;
 use select::document::Document;
 use select::predicate::{Attr, Class, Name, Predicate};
 use std::collections::BTreeMap;
+use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
@@ -19,6 +20,8 @@ use std::path::Path;
 use self::chrono::prelude::*;
 use self::regex::Regex;
 use self::select::node::Node;
+
+static FOLDER_CACHE: &'static str = "./cache/";
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Point {
@@ -85,7 +88,11 @@ impl InvaderSpotter {
         BTreeMap<u16, InvaderSpotter>,
     ) {
         let dt = Local::now();
-        let path = "./cache/".to_owned()
+        if fs::create_dir(FOLDER_CACHE).is_ok() {
+            println!("Folder {} was created", FOLDER_CACHE)
+        }
+
+        let path = FOLDER_CACHE.to_owned()
             + city
             + "_"
             + &dt.year().to_string()

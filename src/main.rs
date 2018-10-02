@@ -16,6 +16,7 @@ extern crate quick_xml;
 use flashed::InvadersFlashed;
 use spotter::InvaderSpotter;
 use collab::InvadersCollab;
+use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
 use structopt::StructOpt;
@@ -23,6 +24,8 @@ use structopt::clap::AppSettings;
 
 use std::io::BufReader;
 use std::collections::{BTreeMap};
+
+static FOLDER_KML: &'static str = "./kml/";
 
 #[derive(StructOpt, Debug)]
 #[structopt(raw(global_setting = "AppSettings::AllowNegativeNumbers"))]
@@ -114,7 +117,10 @@ fn generate_new_city(city: &str, coordinates: (f32, f32), verbose: bool) {
     let kml = kml::generate_kml_new_city(map_active, map_dead, map_unknown, coordinates);
 
     // Generate the Output in the kml folder
-    let mut file = File::create("./kml/".to_owned() + city + ".kml").unwrap();
+    if fs::create_dir(FOLDER_KML).is_ok() {
+        println!("Folder {} was created", FOLDER_KML)
+    }
+    let mut file = File::create(FOLDER_KML.to_owned() + city + ".kml").unwrap();
     file.write_all(kml.as_bytes()).ok();
 }
 
@@ -140,7 +146,10 @@ fn update_city(city: &str, player: Option<String>, v: bool) {
     );
 
     // Generate the Output in the kml folder
-    let mut file = File::create("./kml/".to_owned() + city + "_" + &player + ".kml").unwrap();
+    if fs::create_dir(FOLDER_KML).is_ok() {
+        println!("Folder {} was created", FOLDER_KML)
+    }
+    let mut file = File::create(FOLDER_KML.to_owned() + city + "_" + &player + ".kml").unwrap();
     file.write_all(kml.as_bytes()).ok();
 }
 
@@ -155,8 +164,11 @@ fn generate_collab(players: Vec<String>, verbose: bool) {
     let kml = kml::generate_kml_folder_collab(map_active, collab.tree, players.clone());
 
     // Generate the Output in the kml folder
+    if fs::create_dir(FOLDER_KML).is_ok() {
+        println!("Folder {} was created", FOLDER_KML)
+    }
     let mut file =
-        File::create("./kml/".to_owned() + city + "_" + &(players.join("_")) + ".kml").unwrap();
+        File::create(FOLDER_KML.to_owned() + city + "_" + &(players.join("_")) + ".kml").unwrap();
     file.write_all(kml.as_bytes()).ok();
 }
 

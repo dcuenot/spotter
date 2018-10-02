@@ -1,6 +1,6 @@
 [package]
 name = "invaders"
-version = "0.1.0"
+version = "0.9.0"
 authors = ["Damien Cuenot <damien.cuenot.c@thalesdigital.io>"]
 
 [dependencies]
